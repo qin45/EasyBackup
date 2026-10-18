@@ -3,7 +3,10 @@
 	"package": "cn.qinzhikeji.easybackup.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
-		"ExampleClientMixin"
+		"PauseScreenMixin",
+		"TitleScreenMixin",
+		"MinecraftServerMixin",
+		"MinecraftMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

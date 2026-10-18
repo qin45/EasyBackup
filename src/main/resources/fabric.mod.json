@@ -3,17 +3,17 @@
 	"id": "easybackup",
 	"version": "${version}",
 	"name": "EasyBackup",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Back up and restore your singleplayer worlds without leaving the game.",
 	"authors": [
-		"Me!"
+		"qin45"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/qin45/easybackup",
+		"sources": "https://github.com/qin45/easybackup"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/easybackup/icon.png",
-	"environment": "*",
+	"environment": "client",
 	"entrypoints": {
 		"main": [
 			"cn.qinzhikeji.easybackup.EasyBackup"
@@ -23,16 +23,14 @@
 		]
 	},
 	"mixins": [
-		"easybackup.mixins.json",
 		{
 			"config": "easybackup.client.mixins.json",
 			"environment": "client"
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.19.5",
+		"fabricloader": ">=0.19.2",
 		"minecraft": "~26.2",
-		"java": ">=25",
-		"fabric-api": "*"
+		"java": ">=25"
 	}
 }
