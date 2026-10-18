@@ -531,11 +531,32 @@ public final class BackupManager {
 		});
 	}
 
+	/**
+	 * 清理未完成的回档（删除临时目录与日志）。完成后返回上一级界面；
+	 * 若还有别的存档存在未完成回档，则继续显示下一个恢复提示。
+	 */
 	public static void completeRecovery(RestoreJournal journal, Screen parent) {
 		Minecraft minecraft = Minecraft.getInstance();
 		EXECUTOR.execute(() -> {
-			new RestoreEngine(easyBackupRoot(minecraft)).completeRestore(journal);
-			minecraft.execute(() -> checkRecovery(parent, true));
+			RestoreEngine engine = new RestoreEngine(easyBackupRoot(minecraft));
+			try {
+				engine.completeRestore(journal);
+			} catch (Throwable throwable) {
+				EasyBackup.LOGGER.error("Recovery cleanup failed", throwable);
+				minecraft.execute(() -> minecraft.gui.setScreen(new MessageScreen(parent,
+						Component.translatable("easybackup.title.error"),
+						Component.literal(String.valueOf(throwable.getMessage())))));
+				return;
+			}
+			List<RestoreJournal> remaining = engine.scanJournals();
+			minecraft.execute(() -> {
+				Screen target = parent != null ? parent : new TitleScreen();
+				if (!remaining.isEmpty()) {
+					minecraft.gui.setScreen(new RestoreRecoveryScreen(target, remaining.get(0)));
+				} else {
+					minecraft.gui.setScreen(target);
+				}
+			});
 		});
 	}
 

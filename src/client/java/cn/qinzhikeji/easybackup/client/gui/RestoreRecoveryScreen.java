@@ -7,6 +7,9 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.FormattedCharSequence;
+
+import java.util.List;
 
 /**
  * 启动时发现上次回档未完成/未清理时的恢复界面。
@@ -75,8 +78,12 @@ public class RestoreRecoveryScreen extends Screen {
 			case SWAPPED -> Component.translatable("easybackup.recovery.swapped");
 		};
 		int textWidth = Math.min(460, this.width - 60);
-		gui.textWithWordWrap(this.font, description, (this.width - textWidth) / 2,
-				this.height / 2 - 40, textWidth, 0xFFCCCCCC);
+		List<FormattedCharSequence> lines = this.font.split(description, textWidth);
+		int textY = this.height / 2 - 40;
+		for (FormattedCharSequence line : lines) {
+			gui.centeredText(this.font, line, this.width / 2, textY, 0xFFCCCCCC);
+			textY += 11;
+		}
 	}
 
 	@Override
